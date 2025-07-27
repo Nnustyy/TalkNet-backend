@@ -1,15 +1,16 @@
-// const Jdenticon = require('jdenticon/standalone');
 const Jdenticon = require('jdenticon')
 const {prisma} = require('../prisma/prisma-client')
 const bcrypt = require('bcryptjs')
 const path = require('path')
 const fs = require('fs')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const UserController = {
   register: async (req, res) => {
     const {email, password, name} = req.body;
     if(!email || !password || !name) {
-      return  res.status(400).json({error:'Все поля обязательны!'})
+      return  res.status(400).json({message:'Все поля обязательны'})
     }
     try {
       const existingUser = await prisma.user.findUnique({
@@ -41,7 +42,28 @@ const UserController = {
     }
   },
   login: async(req,res) => {
-    res.send('login')
+    const {email, password} = req.body;
+    if(!email || !password) {
+      return res.status(400).json({message: 'Все поля обязательны'})
+    }
+
+    try {
+      const user = await prisma.user.findUnique({where: {email}})
+      if(!user) {
+        return res.status(400).json({error: 'Неверный логин или пароль'})
+      }
+
+      const valid = await bcrypt.compare(password, user.password)
+      if(!valid) {
+        return res.status(400).json({error: 'Неверный логин или пароль'})
+      }
+
+      const token = jwt.sign(({userId: user.id}), process.env.SECRET_KEY)
+      res.json({token})
+    } catch (error) {
+      console.error('Login error', error)
+      res.status(500).json({error:'Internal server error'})
+    }
   },
   getUserById: async(req,res) => {
     res.send('userId')
