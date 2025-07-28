@@ -4,6 +4,7 @@ const multer = require('multer');
 // const UserController = require('../controllers/user-controller');
 const {UserController} = require('../controllers');
 const authenticateToken = require('../middleware/auth');
+const PostController = require('../controllers/post-controller');
 const uploadDestination = 'uploads';
 
 const storage = multer.diskStorage({
@@ -20,5 +21,11 @@ router.post('/login', UserController.login )
 router.get('/current',authenticateToken, UserController.current)
 router.get('/users/:id',authenticateToken, UserController.getUserById)
 router.put('/users/:id',authenticateToken, UserController.updateUser)
+
+
+router.post('/posts',authenticateToken, PostController.createPost)
+router.get('/posts',authenticateToken, PostController.getAllPosts)
+router.get('/posts/:id', PostController.getPostById)
+router.delete('/posts/:id',authenticateToken, PostController.deletePost)
 
 module.exports = router;
