@@ -25,7 +25,7 @@ router.put('/users/:id',authenticateToken, UserController.updateUser)
 
 router.post('/posts',authenticateToken, PostController.createPost)
 router.get('/posts',authenticateToken, PostController.getAllPosts)
-router.get('/posts/:id', PostController.getPostById)
+router.get('/posts/:id',authenticateToken, PostController.getPostById)
 router.delete('/posts/:id',authenticateToken, PostController.deletePost)
 
 module.exports = router;

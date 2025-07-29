@@ -48,12 +48,42 @@ const PostController = {
       res.send(500).json({error:'Internal server error'})
     }
   },
-  deletePost: async (req,res) => {
-    res.send('delete')
-  },
   getPostById: async (req,res) => {
-    res.send('id')
+    const {id} = req.params;
+    const userId = req.user.userId;
+    
+    try {
+      const post = await prisma.post.findUnique({
+        where: {id},
+        include: {
+          comments: {
+            include: {
+              user:true
+            }
+          },
+          author:true,
+          likes:true
+        }
+      })
+
+      if(!post) {
+        return res.status(404).json({error: 'Пост не найден'})
+      }
+
+      const postWithLikeInfo = {
+        ...post,
+        likedByUser:post.likes.some(like => like.userId === userId)
+      }
+      res.json({postWithLikeInfo})
+
+    } catch (error) {
+      console.error('gep post error', error)
+      res.status(500).json({error:'Internal server error'})
+    }
   },
+    deletePost: async (req,res) => {
+    res.send('delete')
+  }
 
 }
 
