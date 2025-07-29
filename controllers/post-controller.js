@@ -24,7 +24,7 @@ const PostController = {
     }
   },
   getAllPosts: async (req,res) => {
-        const {userId} = req.user.userId;
+        const userId = req.user.userId;
 
     try {
       const posts = await prisma.post.findMany({
@@ -45,7 +45,7 @@ const PostController = {
       res.json({postWithLikeInfo})
     } catch (error) {
       console.error('get all post', error)
-      res.send(500).json({error:'Internal server error'})
+      res.status(500).json({error:'Internal server error'})
     }
   },
   getPostById: async (req,res) => {
@@ -113,3 +113,4 @@ const PostController = {
 }
 
 module.exports = PostController;
+
