@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs')
 const path = require('path')
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
-const { error } = require('console')
 require('dotenv').config()
 
 const UserController = {
