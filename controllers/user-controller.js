@@ -10,7 +10,7 @@ const UserController = {
   register: async (req, res) => {
     const {email, password, name} = req.body;
     if(!email || !password || !name) {
-      return  res.status(400).json({message:'Все поля обязательны'})
+      return  res.status(400).json({error:'Все поля обязательны'})
     }
     try {
       const existingUser = await prisma.user.findUnique({
@@ -44,7 +44,7 @@ const UserController = {
   login: async(req,res) => {
     const {email, password} = req.body;
     if(!email || !password) {
-      return res.status(400).json({message: 'Все поля обязательны'})
+      return res.status(400).json({error: 'Все поля обязательны'})
     }
 
     try {
@@ -67,7 +67,7 @@ const UserController = {
   },
   getUserById: async(req,res) => {
     const {id} = req.params;
-    const {userId} = req.user.userId;
+    const userId = req.user.userId;
 
 try {
       const user = await prisma.user.findUnique({
