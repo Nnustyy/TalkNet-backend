@@ -131,7 +131,7 @@ try {
           location:location || undefined
         }
       })
-      res.json({user})
+      res.json(user)
     } catch (error) {
       console.error('Update user error', error);
       res.status(500).json({error:'Internal server error'})
@@ -160,7 +160,7 @@ try {
       if(!user) {
         return res.status(400).json({error: 'Не удалось найти пользователя'})
       }
-      res.json({user})
+      res.json(user)
     } catch (error) {
       console.error({error: 'Get current error'}, error)
       res.status(500).json({error: 'Internal server error'})
