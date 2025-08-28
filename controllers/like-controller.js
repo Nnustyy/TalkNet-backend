@@ -20,7 +20,7 @@ const LikeController = {
           userId
         }
       })
-      res.json({like})
+      res.json(like)
     } catch (error) {
       console.error('Like post error', error)
       res.status(500).json({error:'Internal server error'})
@@ -42,7 +42,7 @@ const LikeController = {
       const deleteLike = await prisma.like.delete({
         where: {id:like.id}
       })
-      res.json({like:deleteLike})
+      res.json(deleteLike)
     } catch (error) {
       console.error('Unlike post error', error)
       res.status(500).json({error:'Internal server error'})

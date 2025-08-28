@@ -17,7 +17,7 @@ const PostController = {
           authorId
         }
       })
-      res.json({post})
+      res.json(post)
     } catch (error) {
       console.error('Create post error', error)
       res.status(500).json({error:'Internal server error'})
@@ -42,7 +42,7 @@ const PostController = {
         ...post,
         likedByUser:post.likes.some(like => like.userId === userId)
       }))
-      res.json({postWithLikeInfo})
+      res.json(postWithLikeInfo)
     } catch (error) {
       console.error('get all post', error)
       res.status(500).json({error:'Internal server error'})
@@ -74,7 +74,7 @@ const PostController = {
         ...post,
         likedByUser:post.likes.some(like => like.userId === userId)
       }
-      res.json({postWithLikeInfo})
+      res.json(postWithLikeInfo)
 
     } catch (error) {
       console.error('gep post error', error)
@@ -102,7 +102,7 @@ const PostController = {
         prisma.like.deleteMany({where: {postId:id}}),
         prisma.post.delete({where: {id}})
       ])
-      res.json({transaction})
+      res.json(transaction)
     } catch (error) {
       console.error('Delete post error',error)
       res.status(500).json({error: 'Internal server error'})

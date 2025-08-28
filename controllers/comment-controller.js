@@ -18,7 +18,7 @@ const CommentController = {
         userId
       }
     })
-    res.json({comment})
+    res.json(comment)
     } catch (error) {
       console.error('Create comment error', error)
       res.status(500).json({error:'Internal server error'})
@@ -45,7 +45,7 @@ const CommentController = {
         where: {id}
       })
 
-      res.json({comment})
+      res.json(comment)
     } catch (error) {
       console.error('Delete comment error', error)
       res.status(500).json({error: 'Internal server error'})
