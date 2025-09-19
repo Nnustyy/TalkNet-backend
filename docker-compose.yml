@@ -29,6 +29,29 @@
 
 
 
+# version: '3'
+# services:
+#   talknet-backend:
+#     build: .
+#     ports:
+#       - '3000:3000'
+#     depends_on:
+#       - db
+#       - TalkNet - frontend
+#     environment:
+#       DATABASE_URL: 'mongodb://admin:12345@db:27017/mydatabase?authSource=admin&directConnection=true'
+#   db:
+#     image: prismagraphql/mongo-single-replica:4.4.3-bionic
+#     ports:
+#       - '27017:27017'
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: admin
+#       MONGO_INITDB_ROOT_PASSWORD: 12345
+#       react-app:
+#       build: ../TalkNet - frontend
+#       ports: 
+#       - '80:80'
+
 version: '3'
 services:
   talknet-backend:
@@ -37,8 +60,10 @@ services:
       - '3000:3000'
     depends_on:
       - db
+      - talknet-frontend
     environment:
       DATABASE_URL: 'mongodb://admin:12345@db:27017/mydatabase?authSource=admin&directConnection=true'
+  
   db:
     image: prismagraphql/mongo-single-replica:4.4.3-bionic
     ports:
@@ -46,3 +71,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 12345
+  
+  talknet-frontend:
+    build: ../TalkNet - frontend  
+    ports:
+      - '80:80'
