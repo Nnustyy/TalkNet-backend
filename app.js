@@ -12,7 +12,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.set('view engine', 'jade');
+// app.set('view engine', 'jade'); 
 
 app.use('/uploads', express.static('uploads'))
 
@@ -27,15 +27,26 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// error handler 
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  // УБРАЛИ res.locals 
+  
+  console.error('API Error:', {
+    message: err.message,
+    status: err.status || 500,
+    path: req.path,
+    method: req.method,
+    stack: req.app.get('env') === 'development' ? err.stack : undefined
+  });
+  
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    success: false,
+    error: {
+      message: req.app.get('env') === 'development' ? err.message : 'Internal Server Error',
+      status: err.status || 500
+    }
+  });
 });
 
 module.exports = app;
